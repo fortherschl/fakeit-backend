@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl  implements AuthenticationService {
     }
 
     @Override
-    public String register(String email, String password) {
+    public String register(String email, String password, String username) {
         String apiKey = null;
         try {
             apiKey = getApiKeyFromFile();
@@ -61,7 +61,6 @@ public class AuthenticationServiceImpl  implements AuthenticationService {
             }
 
         }
-
         return "Error con la autenticacion";
     }
 }
