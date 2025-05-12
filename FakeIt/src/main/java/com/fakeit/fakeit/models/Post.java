@@ -3,7 +3,7 @@ package com.fakeit.fakeit.models;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Photo {
+public class Post {
     private String description;
     private LocalDateTime postDate;
     private String format;
@@ -14,7 +14,7 @@ public class Photo {
     private String userId;
     private List<Vote> votes;
 
-    public Photo(String description, LocalDateTime postDate, String format, String photoId, boolean real, String title, String url, String userId, List<Vote> votes) {
+    public Post(String description, LocalDateTime postDate, String format, String photoId, boolean real, String title, String url, String userId, List<Vote> votes) {
         this.description = description;
         this.postDate = postDate;
         this.format = format;
