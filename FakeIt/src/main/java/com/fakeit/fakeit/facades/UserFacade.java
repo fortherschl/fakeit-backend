@@ -20,7 +20,7 @@ public class UserFacade {
     }
 
     public String register(String email, String password, String username) {
-        String token = authenticationService.authWithFirebase(email, password);
+        String token = authenticationService.register(email, password, username);
 
         newUserService.addNewUser(email, username);
         return token;
