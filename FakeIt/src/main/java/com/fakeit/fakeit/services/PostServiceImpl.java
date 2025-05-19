@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
         CollectionReference collectionReference = FirestoreClient.getFirestore().collection("posts");
         try {
             ApiFuture<WriteResult> result = collectionReference.document().set(postData);
-            result.get(); // Espera a que se complete
+            result.get();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class PostServiceImpl implements PostService {
         Firestore db = FirestoreClient.getFirestore();
 
         // Firestore document IDs are strings, so convert the ID
-        DocumentReference docRef = db.collection("posts").document(String.valueOf(id));
+        DocumentReference docRef = db.collection("publicaciones").document(String.valueOf(id));
         ApiFuture<DocumentSnapshot> future = docRef.get();
 
         try {
