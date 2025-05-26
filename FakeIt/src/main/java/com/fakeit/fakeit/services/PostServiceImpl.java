@@ -2,24 +2,21 @@ package com.fakeit.fakeit.services;
 
 import com.fakeit.fakeit.dtos.NewPostDto;
 import com.fakeit.fakeit.dtos.PostDto;
+import com.fakeit.fakeit.models.Post;
 import com.fakeit.fakeit.models.Vote;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class PostServiceImpl implements PostService {
+
+    private final Firestore db = FirestoreClient.getFirestore();
 
     @Override
     public boolean addNewPost(NewPostDto newPostDto) {
@@ -35,7 +32,7 @@ public class PostServiceImpl implements PostService {
         postData.put("usuarioID", newPostDto.getUserId());
         postData.put("votos", new ArrayList<Vote>());
 
-        CollectionReference collectionReference = FirestoreClient.getFirestore().collection("posts");
+        CollectionReference collectionReference = FirestoreClient.getFirestore().collection("publicaciones");
         try {
             ApiFuture<WriteResult> result = collectionReference.document().set(postData);
             result.get();
@@ -48,9 +45,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto getPostById(String id) {
-        Firestore db = FirestoreClient.getFirestore();
-
-        // Firestore document IDs are strings, so convert the ID
         DocumentReference docRef = db.collection("publicaciones").document(String.valueOf(id));
         ApiFuture<DocumentSnapshot> future = docRef.get();
 
@@ -66,6 +60,22 @@ public class PostServiceImpl implements PostService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<PostDto> get10Posts(int start) {
+            ApiFuture<QuerySnapshot> future = db.collection("publicaciones")
+                    .orderBy("cantidadVotos", Query.Direction.DESCENDING)
+                    .limit(10+start)
+                    .get();
+
+        try {
+            return future.get().toObjects(PostDto.class);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

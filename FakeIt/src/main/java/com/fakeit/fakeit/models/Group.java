@@ -19,8 +19,9 @@ public class Group {
     private boolean publicGroup;
     private int currentRound;
     private List<User> users;
+    private int cantidadVotos;
 
-    public Group(List<User> administrators, int userCount, String description, LocalDateTime creationDate, LocalDateTime lastMessageTime, String groupPic, String groupId, int maxUsers, String groupName, boolean publicGroup, int currentRound, List<User> users) {
+    public Group(List<User> administrators, int userCount, String description, LocalDateTime creationDate, LocalDateTime lastMessageTime, String groupPic, String groupId, int maxUsers, String groupName, boolean publicGroup, int currentRound, List<User> users, int cantidadVotos) {
         this.administrators = administrators;
         this.userCount = userCount;
         this.description = description;
@@ -33,5 +34,6 @@ public class Group {
         this.publicGroup = publicGroup;
         this.currentRound = currentRound;
         this.users = users;
+        this.cantidadVotos = cantidadVotos;
     }
 }
