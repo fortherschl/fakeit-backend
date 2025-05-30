@@ -1,21 +1,17 @@
 package com.fakeit.fakeit.dtos;
 
-import com.fakeit.fakeit.models.Vote;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.google.cloud.Timestamp;
 import lombok.Data;
 
 @Data
-public class PostDto {
+public class PostEnhancedDto {
     private String publicacionId;
     private String titulo;
     private String urlImagen;
-    private boolean real;
+    private Boolean real;
     private String usuarioId;
+    private String nombreUsuario;
+    private String fotoPerfil;
     private String grupoId;
     private Timestamp fechaPublicacion;
 }

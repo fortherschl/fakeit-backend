@@ -1,27 +1,50 @@
 package com.fakeit.fakeit.controllers;
 
-import com.fakeit.fakeit.dtos.NewPostDto;
-import com.fakeit.fakeit.dtos.PostDto;
-import com.fakeit.fakeit.facades.NewPostFacade;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
+import com.fakeit.fakeit.dtos.*;
+import com.fakeit.fakeit.facades.PostFacade;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
 
-    private final NewPostFacade newPostFacade;
+    private final PostFacade postFacade;
 
-    public PostController(NewPostFacade newPostFacade) {
-        this.newPostFacade = newPostFacade;
+    @PostMapping
+    public ResponseEntity<String> createPost(@RequestBody NewPostDto dto) {
+        boolean created = postFacade.createPost(dto);
+        return created ? ResponseEntity.ok("Post creado") : ResponseEntity.status(500).body("Error al crear");
     }
-    @PostMapping("/new-post")
-    public ResponseEntity<PostDto> createPost(@RequestBody NewPostDto newPostDto) {
-        return ResponseEntity.ok(newPostFacade.newPost(newPostDto));
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPost(@PathVariable String id) {
+        PostDto post = postFacade.getById(id);
+        return post != null ? ResponseEntity.ok(post) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<List<PostDto>> getPostsByGroup(@PathVariable String groupId) {
+        return ResponseEntity.ok(postFacade.getByGroup(groupId));
+    }
+    @GetMapping("/{id}/safe")
+    public ResponseEntity<PostDto> getSafe(@PathVariable String id) {
+        PostDto p = postFacade.safeById(id);
+        return p != null ? ResponseEntity.ok(p) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/group/{groupId}/hidden")
+    public ResponseEntity<List<PostDto>> listHidden(@PathVariable String groupId) {
+        return ResponseEntity.ok(postFacade.hidden(groupId));
+    }
+
+    @GetMapping("/group/{groupId}/enhanced")
+    public ResponseEntity<List<PostEnhancedDto>> listEnhanced(@PathVariable String groupId) {
+        return ResponseEntity.ok(postFacade.enhanced(groupId));
     }
 }

@@ -1,28 +1,43 @@
 package com.fakeit.fakeit.facades;
 
-import com.fakeit.fakeit.services.AuthenticationService;
-import com.fakeit.fakeit.services.NewUserService;
+import com.fakeit.fakeit.dtos.UserCreateDto;
+import com.fakeit.fakeit.dtos.UserDto;
+import com.fakeit.fakeit.dtos.UserUpdateDto;
+import com.fakeit.fakeit.models.User;
+import com.fakeit.fakeit.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Optional;
+
 @Component
+@RequiredArgsConstructor
 public class UserFacade {
 
-    private final AuthenticationService authenticationService;
-    private final NewUserService newUserService;
+    private final UserService userService;
 
-    public UserFacade(AuthenticationService authenticationService, NewUserService newUserService) {
-        this.authenticationService = authenticationService;
-        this.newUserService = newUserService;
+    public UserDto createUser(UserCreateDto dto) {
+        return userService.getUserById(userService.createUser(dto)).orElseThrow(() -> new RuntimeException("User creation failed"));
     }
 
-    public String login(String email, String password) {
-        return authenticationService.authWithFirebase(email, password);
+    public Optional<UserDto> getUserById(String id) {
+        return userService.getUserById(id);
     }
 
-    public String register(String email, String password, String username) {
-        String token = authenticationService.register(email, password, username);
+    public List<UserDto> searchByUsername(String query) {
+        return userService.searchUsersByUsername(query);
+    }
 
-        newUserService.addNewUser(email, username);
-        return token;
+    public Optional<UserDto> getUserByEmail(String email) {
+        return userService.getUserByEmail(email);
+    }
+
+    public UserDto updateUser(String id, UserUpdateDto dto) {
+        return userService.updateUser(id, dto);
+    }
+
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 }

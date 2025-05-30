@@ -1,39 +1,47 @@
 package com.fakeit.fakeit.models;
 
+import lombok.Data;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 public class User {
-    private boolean admin = false;
-    private String email;
-    private LocalDateTime joinDate;
-    private String profilePicture;
-    private List<Group> groups;
-    private String username;
-    private int eloPoints;
-    private UserRank rank;
-    private LocalDateTime lastSeenDate;
-    private String userId;
+    private boolean administrador = false;
+    private String correo;
+    private Timestamp fechaUnion;
+    private String fotoPerfil;
+    private List<Group> grupos;
+    private String nombreUsuario;
+    private int puntosTotales;
+    private UserRank rango;
+    private Timestamp ultimaSesion;
+    private String usuarioId;
 
     public User(boolean admin,
                 String email,
-                LocalDateTime joinDate,
+                Timestamp joinDate,
                 String profilePicture,
-                List<Group> groups,
-                String username,
-                int eloPoints,
-                UserRank rank,
-                LocalDateTime lastSeenDate,
-                String userId) {
-        this.admin = admin;
-        this.email = email;
-        this.joinDate = joinDate;
-        this.profilePicture = profilePicture;
-        this.groups = groups;
-        this.username = username;
-        this.eloPoints = eloPoints;
-        this.rank = rank;
-        this.lastSeenDate = lastSeenDate;
-        this.userId = userId;
+                List<Group> groupss,
+                String nombreUsuario,
+                int puntosTotales,
+                UserRank rango,
+                Timestamp ultimaSesion,
+                String usuarioId) {
+        this.administrador = admin;
+        this.correo = email;
+        this.fechaUnion = joinDate;
+        this.fotoPerfil = profilePicture;
+        this.grupos = groupss;
+        this.nombreUsuario = nombreUsuario;
+        this.puntosTotales = puntosTotales;
+        this.rango = rango;
+        this.ultimaSesion = ultimaSesion;
+        this.usuarioId = usuarioId;
+    }
+    public User(){
+
     }
 }

@@ -2,8 +2,7 @@ package com.fakeit.fakeit.controllers;
 
 import com.fakeit.fakeit.dtos.UserAuthenticationDto;
 import com.fakeit.fakeit.dtos.UserRegisterDto;
-import com.fakeit.fakeit.facades.UserFacade;
-import com.fakeit.fakeit.services.AuthenticationService;
+import com.fakeit.fakeit.facades.UserFacadeAuth;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
 
-    private final UserFacade userFacade;
+    private final UserFacadeAuth userFacadeAuth;
 
-    public AuthenticationController(UserFacade userFacade) {
-        this.userFacade = userFacade;
+    public AuthenticationController(UserFacadeAuth userFacadeAuth) {
+        this.userFacadeAuth = userFacadeAuth;
     }
 
     @GetMapping("/home")
@@ -26,11 +25,11 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> getLogin(@RequestBody UserAuthenticationDto userAuthenticationDto) {
-        return ResponseEntity.ok(userFacade.login(userAuthenticationDto.getEmail(), userAuthenticationDto.getPassword()));
+        return ResponseEntity.ok(userFacadeAuth.login(userAuthenticationDto.getEmail(), userAuthenticationDto.getPassword()));
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody UserRegisterDto userRegisterDto) {
-        return ResponseEntity.ok(userFacade.register(userRegisterDto.getEmail(), userRegisterDto.getPassword(), userRegisterDto.getUsername()));
+        return ResponseEntity.ok(userFacadeAuth.register(userRegisterDto.getEmail(), userRegisterDto.getPassword(), userRegisterDto.getUsername()));
     }
 }
