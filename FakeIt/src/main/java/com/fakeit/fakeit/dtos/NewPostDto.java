@@ -6,9 +6,9 @@ import lombok.Setter;
 
 @Data
 public class NewPostDto {
-    private String title;
-    private String url;
+    private String titulo;
+    private String urlImagen;
     private boolean real;
-    private String userId;
+    private String usuarioId;
     private String grupoId;
 }

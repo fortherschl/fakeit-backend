@@ -29,8 +29,8 @@ public class PostFacade {
     public List<PostDto> getByGroup(String groupId) {
         return postService.getPostsByGroup(groupId);
     }
-    public PostDto safeById(String id)          { return postService.getPostSafe(id); }
+    public PostHiddenDto safeById(String id)          { return postService.getPostSafe(id); }
     public List<PostDto> byGroup(String gid)    { return postService.getPostsByGroup(gid); }
-    public List<PostDto> hidden(String gid)     { return postService.getPostsHidden(gid); }
+    public List<PostHiddenDto> hidden(String gid)     { return postService.getPostsHidden(gid); }
     public List<PostEnhancedDto> enhanced(String gid){ return postService.getPostsEnhanced(gid); }
 }

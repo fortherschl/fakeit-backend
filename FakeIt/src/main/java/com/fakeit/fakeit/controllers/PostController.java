@@ -33,13 +33,13 @@ public class PostController {
         return ResponseEntity.ok(postFacade.getByGroup(groupId));
     }
     @GetMapping("/{id}/safe")
-    public ResponseEntity<PostDto> getSafe(@PathVariable String id) {
-        PostDto p = postFacade.safeById(id);
+    public ResponseEntity<PostHiddenDto> getSafe(@PathVariable String id) {
+        PostHiddenDto p = postFacade.safeById(id);
         return p != null ? ResponseEntity.ok(p) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/group/{groupId}/hidden")
-    public ResponseEntity<List<PostDto>> listHidden(@PathVariable String groupId) {
+    public ResponseEntity<List<PostHiddenDto>> listHidden(@PathVariable String groupId) {
         return ResponseEntity.ok(postFacade.hidden(groupId));
     }
 

@@ -1,13 +1,8 @@
 package com.fakeit.fakeit.dtos;
 
-import com.fakeit.fakeit.models.Vote;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import com.google.cloud.Timestamp;
-import lombok.Data;
 
 @Data
 public class PostDto {
