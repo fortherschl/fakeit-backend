@@ -1,28 +1,30 @@
 package com.fakeit.fakeit.facades;
 
+import com.fakeit.fakeit.dtos.UserCreateDto;
 import com.fakeit.fakeit.services.AuthenticationService;
 import com.fakeit.fakeit.services.NewUserService;
+import com.fakeit.fakeit.services.UserService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserFacadeAuth {
 
     private final AuthenticationService authenticationService;
-    private final NewUserService newUserService;
+    private final UserService userService;
 
-    public UserFacadeAuth(AuthenticationService authenticationService, NewUserService newUserService) {
+    public UserFacadeAuth(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
-        this.newUserService = newUserService;
+        this.userService = userService;
     }
 
     public String login(String email, String password) {
         return authenticationService.authWithFirebase(email, password);
     }
 
-    public String register(String email, String password, String username) {
-        String token = authenticationService.register(email, password, username);
+    public String register(UserCreateDto dto) {
+        String token = authenticationService.register(dto.getCorreo(), dto.getPassword(), dto.getNombreUsuario());
 
-        newUserService.addNewUser(email, username);
+        userService.createUser(dto);
         return token;
     }
 }

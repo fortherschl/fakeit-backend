@@ -20,6 +20,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean addNewPost(NewPostDto dto) {
+        String id = UUID.randomUUID().toString();
         Map<String, Object> data = new HashMap<>();
         data.put("titulo", dto.getTitulo());
         data.put("urlImagen", dto.getUrlImagen());
@@ -27,11 +28,11 @@ public class PostServiceImpl implements PostService {
         data.put("usuarioId", dto.getUsuarioId());
         data.put("grupoId", dto.getGrupoId());
         data.put("fechaPublicacion", Timestamp.now());
-        data.put("fotoId", UUID.randomUUID().toString());
+        data.put("fotoId", id);
         data.put("votos", new ArrayList<Vote>());
 
         try {
-            db.collection("publicaciones").document().set(data).get();
+            db.collection("publicaciones").document(id).set(data).get();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

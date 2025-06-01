@@ -3,6 +3,7 @@ package com.fakeit.fakeit.services;
 import com.fakeit.fakeit.dtos.UserCreateDto;
 import com.fakeit.fakeit.dtos.UserDto;
 import com.fakeit.fakeit.dtos.UserUpdateDto;
+import com.fakeit.fakeit.models.UserRank;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
@@ -26,11 +27,11 @@ public class UserServiceImpl implements UserService {
         docData.put("administrador", false);
         docData.put("correo", dto.getCorreo());
         docData.put("fechaUnion", Timestamp.now());
-        docData.put("fotoPerfil", "");
+        docData.put("fotoPerfil", dto.getFotoPerfil());
         docData.put("grupos", new ArrayList<>());
         docData.put("nombreUsuario", dto.getNombreUsuario());
         docData.put("puntosTotales", 0);
-        docData.put("rango", "Nuevo");
+        docData.put("rango", UserRank.BRONZE);
         docData.put("ultimaSesion", null);
         docData.put("usuarioId", id);
 

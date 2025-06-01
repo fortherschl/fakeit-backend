@@ -144,7 +144,6 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    // ---------- Unirse ----------
     @Override
     public GroupDto joinPublicGroup(String grupoId, String userId) {
         try {
@@ -172,7 +171,6 @@ public class GroupServiceImpl implements GroupService {
         }
     }
 
-    // ---------- Salir ----------
     @Override
     public void leaveGroup(String grupoId, String userId) {
         db.collection("grupos").document(grupoId)
@@ -185,7 +183,6 @@ public class GroupServiceImpl implements GroupService {
                 .update("grupos", FieldValue.arrayRemove(grupoId));
     }
 
-    // ---------- Invitar ----------
     @Override
     public void inviteUser(String grupoId, String adminId, String invitedUserId) {
         DocumentSnapshot g = getSnapshot("grupos", grupoId);
@@ -234,8 +231,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private void createNotification(String tipo, String grupoId, String remitente, String destinatario) {
+        String id = UUID.randomUUID().toString();
         Map<String, Object> n = Map.of(
-                "notificacionId", UUID.randomUUID().toString(),
+                "notificacionId", id,
                 "tipo", tipo,
                 "grupoId", grupoId,
                 "remitenteId", remitente,
@@ -243,6 +241,6 @@ public class GroupServiceImpl implements GroupService {
                 "estado", "pendiente",
                 "creadoEn", Timestamp.now()
         );
-        db.collection("notificaciones").document().set(n);
+        db.collection("notificaciones").document(id).set(n);
     }
 }

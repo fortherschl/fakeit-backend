@@ -18,4 +18,14 @@ public class GroupDto {
     private List<String> usuarios;
     private int cantidadUsuarios;
     private int rondaActual;
+
+    @Data
+    public static class VoteDto {
+        private String votoId;
+        private String publicacionId;
+        private String grupoId;
+        private String usuarioId;
+        private Boolean real;
+        private Timestamp fechaHora;
+    }
 }

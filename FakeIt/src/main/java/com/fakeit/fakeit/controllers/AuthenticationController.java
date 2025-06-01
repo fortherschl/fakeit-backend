@@ -1,6 +1,7 @@
 package com.fakeit.fakeit.controllers;
 
 import com.fakeit.fakeit.dtos.UserAuthenticationDto;
+import com.fakeit.fakeit.dtos.UserCreateDto;
 import com.fakeit.fakeit.dtos.UserRegisterDto;
 import com.fakeit.fakeit.facades.UserFacadeAuth;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterDto userRegisterDto) {
-        return ResponseEntity.ok(userFacadeAuth.register(userRegisterDto.getEmail(), userRegisterDto.getPassword(), userRegisterDto.getUsername()));
+    public ResponseEntity<String> register(@RequestBody UserCreateDto dto) {
+        return ResponseEntity.ok(userFacadeAuth.register(dto));
     }
 }
