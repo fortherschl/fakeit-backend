@@ -5,6 +5,7 @@ import com.fakeit.fakeit.dtos.NotificationResponseDto;
 import com.fakeit.fakeit.facades.NotificationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -28,7 +29,10 @@ public class NotificationController {
             @RequestBody NotificationResponseDto dto,
             Principal principal
     ) {
-        String result = facade.respond(id, principal.getName(), dto.isAccept());
+        String email = ((JwtAuthenticationToken) principal).getToken().getClaimAsString("email");
+        String result = facade.respond(id, email, dto.isAccept());
+
         return ResponseEntity.ok(result);
     }
+
 }

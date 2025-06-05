@@ -1,6 +1,7 @@
 package com.fakeit.fakeit.services;
 
 import com.fakeit.fakeit.dtos.NotificationDto;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
@@ -47,17 +48,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public String respondToNotification(String notificationId, String userId, boolean accept) {
+    public String respondToNotification(String notificationId, String email, boolean accept) {
         try {
+            // Buscar notificación
             DocumentReference notiRef = db.collection("notificaciones").document(notificationId);
             DocumentSnapshot notiDoc = notiRef.get().get();
 
             if (!notiDoc.exists()) return "Notificación no encontrada";
 
             Map<String, Object> data = notiDoc.getData();
-            if (!Objects.equals(data.get("destinatarioId"), userId)) {
-                return "No autorizado";
-            }
+
             if (!Objects.equals(data.get("estado"), "pendiente")) {
                 return "Ya respondida";
             }
@@ -70,20 +70,21 @@ public class NotificationServiceImpl implements NotificationService {
 
             if (!accept) return "Rechazada";
 
+            // Añadir al grupo si se acepta
             String tipo = (String) data.get("tipo");
             String grupoId = (String) data.get("grupoId");
             String idToAdd = tipo.equals("invitacion_grupo")
-                    ? userId
+                    ? (String) data.get("destinatarioId")
                     : (String) data.get("remitenteId");
 
-            // Añadir a grupo
-            DocumentReference groupRef = db.collection("grupos").document(grupoId);
-            groupRef.update(
-                    "usuarios", FieldValue.arrayUnion(idToAdd),
-                    "cantidadUsuarios", FieldValue.increment(1)
-            );
+            // Añadir al grupo
+            db.collection("grupos").document(grupoId)
+                    .update(
+                            "usuarios", FieldValue.arrayUnion(idToAdd),
+                            "cantidadUsuarios", FieldValue.increment(1)
+                    );
 
-            // Añadir a usuario
+            // Añadir al usuario
             db.collection("usuarios").document(idToAdd)
                     .update("grupos", FieldValue.arrayUnion(grupoId));
 
@@ -91,7 +92,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return "Error";
+            return "Error interno";
         }
     }
 }
