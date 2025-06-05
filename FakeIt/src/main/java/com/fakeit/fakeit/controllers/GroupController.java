@@ -27,7 +27,7 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupDto>> notIn(@RequestParam String userId) {
+    public ResponseEntity<List<GroupDto>>    notIn(@RequestParam String userId) {
         return ResponseEntity.ok(facade.groupsNotIn(userId));
     }
 
