@@ -63,7 +63,6 @@ public class LeaderboardBatchService {
             }
             int puntos = Math.round(enganados * (tamanioGrupo / 50.0f) * 10);
 
-            // --- construir entrada leaderboard ---
             Map<String, Object> entry = new HashMap<>();
             entry.put("publicacionId", publicacionId);
             entry.put("grupoId", grupoId);

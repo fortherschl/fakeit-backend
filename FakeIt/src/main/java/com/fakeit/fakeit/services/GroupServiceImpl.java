@@ -68,7 +68,6 @@ public class GroupServiceImpl implements GroupService {
         List<GroupDto> out = new ArrayList<>();
         try {
             QuerySnapshot snap = db.collection("grupos")
-                    .whereEqualTo("publico", true)
                     .get().get();
 
             for (DocumentSnapshot doc : snap.getDocuments()) {

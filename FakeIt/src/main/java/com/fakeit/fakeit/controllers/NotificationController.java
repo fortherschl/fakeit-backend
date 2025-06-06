@@ -19,20 +19,17 @@ public class NotificationController {
     private final NotificationFacade facade;
 
     @GetMapping
-    public ResponseEntity<List<NotificationDto>> getMyNotifications(Principal principal) {
-        return ResponseEntity.ok(facade.getPending(principal.getName()));
+    public ResponseEntity<List<NotificationDto>> getByUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(facade.getPending(userId));
     }
 
     @PostMapping("/{id}/responder")
     public ResponseEntity<String> respond(
             @PathVariable String id,
-            @RequestBody NotificationResponseDto dto,
-            Principal principal
+            @RequestBody NotificationResponseDto dto
     ) {
-        String email = ((JwtAuthenticationToken) principal).getToken().getClaimAsString("email");
-        String result = facade.respond(id, email, dto.isAccept());
-
+        String result = facade.respond(id, dto.isAccept());
         return ResponseEntity.ok(result);
     }
-
 }
+

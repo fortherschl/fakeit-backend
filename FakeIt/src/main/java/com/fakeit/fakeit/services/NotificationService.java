@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface NotificationService {
     List<NotificationDto> getPendingNotifications(String userId);
-    String respondToNotification(String notificationId, String userId, boolean accept);
+    String respondToNotification(String notificationId, boolean accept);
 }
+

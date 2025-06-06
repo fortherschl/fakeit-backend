@@ -29,7 +29,6 @@ public class NotificationServiceImpl implements NotificationService {
             for (DocumentSnapshot doc : snap.getDocuments()) {
                 NotificationDto dto = doc.toObject(NotificationDto.class);
 
-                // Enriquecer
                 DocumentSnapshot userDoc = db.collection("usuarios")
                         .document(dto.getRemitenteId()).get().get();
                 dto.setRemitenteUsername(userDoc.exists() ? userDoc.getString("nombreUsuario") : "Desconocido");
@@ -48,21 +47,18 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public String respondToNotification(String notificationId, String email, boolean accept) {
+    public String respondToNotification(String notificationId, boolean accept) {
         try {
-            // Buscar notificación
             DocumentReference notiRef = db.collection("notificaciones").document(notificationId);
             DocumentSnapshot notiDoc = notiRef.get().get();
 
             if (!notiDoc.exists()) return "Notificación no encontrada";
 
             Map<String, Object> data = notiDoc.getData();
-
             if (!Objects.equals(data.get("estado"), "pendiente")) {
                 return "Ya respondida";
             }
 
-            // Actualizar estado
             notiRef.update(
                     "estado", accept ? "aceptada" : "rechazada",
                     "respondidoEn", Timestamp.now()
@@ -70,21 +66,19 @@ public class NotificationServiceImpl implements NotificationService {
 
             if (!accept) return "Rechazada";
 
-            // Añadir al grupo si se acepta
+            // Lógica de aceptación: añadir a grupo y al usuario
             String tipo = (String) data.get("tipo");
             String grupoId = (String) data.get("grupoId");
             String idToAdd = tipo.equals("invitacion_grupo")
                     ? (String) data.get("destinatarioId")
                     : (String) data.get("remitenteId");
 
-            // Añadir al grupo
             db.collection("grupos").document(grupoId)
                     .update(
                             "usuarios", FieldValue.arrayUnion(idToAdd),
                             "cantidadUsuarios", FieldValue.increment(1)
                     );
 
-            // Añadir al usuario
             db.collection("usuarios").document(idToAdd)
                     .update("grupos", FieldValue.arrayUnion(grupoId));
 

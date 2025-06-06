@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl  implements AuthenticationService {
 
     @Override
     public String authWithFirebase(String email, String password) {
-        String apiKey = null;
+        String apiKey;
         try {
             apiKey = getApiKeyFromFile();
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl  implements AuthenticationService {
 
     @Override
     public String register(String email, String password, String username) {
-        String apiKey = null;
+        String apiKey;
         try {
             apiKey = getApiKeyFromFile();
         } catch (IOException e) {

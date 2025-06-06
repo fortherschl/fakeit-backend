@@ -18,5 +18,4 @@ public class UserDto {
     private boolean administrador;
     private List<String> grupos;
 
-    public UserDto() {}
 }

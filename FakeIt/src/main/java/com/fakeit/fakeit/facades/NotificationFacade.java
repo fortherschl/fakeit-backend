@@ -17,7 +17,7 @@ public class NotificationFacade {
         return service.getPendingNotifications(userId);
     }
 
-    public String respond(String notificationId, String userId, boolean accept) {
-        return service.respondToNotification(notificationId, userId, accept);
+    public String respond(String notificationId, boolean accept) {
+        return service.respondToNotification(notificationId, accept);
     }
 }
